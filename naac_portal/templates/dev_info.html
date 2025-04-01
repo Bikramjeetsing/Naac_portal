@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% block title %}Developer Info{% endblock %}
+
+{% block extra_head %}
+{% load static %}
+
+<style>
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Developer Section */
+.dev_info {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin: 80px auto;
+    max-width: 1200px;
+}
+
+/* Developer Card */
+.developer-card {
+    background: white;
+    padding: 30px;
+    width: 380px;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+.developer-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.2);
+}
+.developer-card::after {
+    content: "";
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+/* Profile Picture */
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #007bff;
+    object-fit: cover;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease-in-out;
+}
+.developer-card:hover .profile-pic {
+    transform: scale(1.1);
+}
+
+/* Name & Role */
+h2 {
+    margin: 10px 0 5px;
+    font-size: 22px;
+    color: #222;
+    font-weight: bold;
+}
+.role {
+    color: #007bff;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Developer Info */
+.info {
+    text-align: left;
+    font-size: 15px;
+    margin-bottom: 20px;
+    color: #555;
+}
+.info p {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+.info strong {
+    color: #222;
+    margin-right: 5px;
+}
+
+/* Icons */
+.icon {
+    font-size: 18px;
+    margin-right: 8px;
+    color: #007bff;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Contact Button */
+.contact-btn {
+    background: linear-gradient(90deg, #007bff, #6610f2);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+.contact-btn:hover {
+    background: linear-gradient(90deg, #6610f2, #007bff);
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dev_info {
+        flex-direction: column;
+        align-items: center;
+    }
+    .developer-card {
+        width: 90%;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dev_info">
+
+    <!-- Developer 1: Arshdeep Singh -->
+    <div class="developer-card">
+        <img src="{% static 'img/arshdeep.jpg' %}" alt="Arshdeep Singh" class="profile-pic">
+        <h2>Arshdeep Singh</h2>
+        <p class="role">Software Developer | Data Scientist</p>
+
+        <div class="info">
+            <p><i class="icon">📍</i><strong>Location:</strong> Sangrur, Punjab</p>
+            <p><i class="icon">🎓</i><strong>Education:</strong> B.Voc in Software Development</p>
+            <p><i class="icon">🏫</i><strong>College:</strong> Guru Nanak College, Budhlada</p>
+            <p><i class="icon">🌐</i><strong>GitHub:</strong> <a href="https://github.com/Arshdeep6840" target="_blank">github.com/Arshdeep6840</a></p>
+        </div>
+
+        <a href="mailto:arshdeep@example.com">
+            <button class="contact-btn">Contact Me</button>
+        </a>
+    </div>
+
+    <!-- Developer 2: Bikramjeet Singh -->
+    <div class="developer-card">
+        <img src="{% static 'img/bikramjeet.jpg' %}" alt="Bikramjeet Singh" class="profile-pic">
+        <h2>Bikramjeet Singh</h2>
+        <p class="role">Software Developer | Data Scientist</p>
+
+        <div class="info">
+            <p><i class="icon">📍</i><strong>Location:</strong> Ratia, Haryana</p>
+            <p><i class="icon">🎓</i><strong>Education:</strong> B.Voc in Software Development</p>
+            <p><i class="icon">💼</i><strong>Skills:</strong> Python, SQL, Data Science</p>
+            <p><i class="icon">🌐</i><strong>GitHub:</strong> <a href="https://github.com/bikram" target="_blank">github.com/bikram</a></p>
+        </div>
+
+        <a href="mailto:bikram@example.com">
+            <button class="contact-btn">Contact Me</button>
+        </a>
+    </div>
+
+</div>
+{% endblock %}

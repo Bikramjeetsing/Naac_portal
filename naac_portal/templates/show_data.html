@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Uploaded PDFs - GNC{% endblock %}
+
+{% block extra_head %}
+<style>
+  .pdf-table {
+    width: 90%;
+    margin: 40px auto;
+    border-collapse: collapse;
+  }
+  h2{
+    text-align: center;
+    margin-top: 20px;
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+
+  .pdf-table th, .pdf-table td {
+    border: 1px solid #ddd;
+    padding: 10px 0px;
+    text-align: left;
+    padding-left: 10px; 
+
+  }
+
+  .pdf-table th {
+    background-color: #007bff;
+    color: white;
+    padding-left: 10px; 
+  
+  }
+
+  .pdf-table tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .pdf-name {
+    word-break: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+    max-height: 4.5em;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  .pdf-link {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+  }
+
+  .pdf-link:hover {
+    color: #0056b3;
+  }
+
+  .page-title {
+    text-align: center;
+    margin: 40px 0;
+    font-size: 32px;
+  }
+
+  .file-upload {
+    margin: 40px auto;
+    text-align: center;
+  }
+
+  .btn {
+    background-color: #3086e1;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background 0.3s;
+  }
+  .btn:hover {
+    background-color: #0056b3;
+  }
+  #fileInput {
+    display: none;
+  }
+
+  #dropText {
+    cursor: pointer;
+    color: #007bff;
+    font-size: 18px;
+  }
+
+  #pdfIcon {
+    margin-top: 10px;
+  }
+
+  .btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.update-btn {
+    background-color: #3498db;
+    color: white;
+    margin-right: 5px;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<h2 class="page-title">{{ page_title }}</h2>
+<h2>{{ year.year }} ➡ {{ chapter_name }} ➡ {{ chapter_subname }} ➡ {{ subchapter_name }} ➡ {{ category_name }}</h2>
+
+<table class="pdf-table">
+    <thead>
+        <tr>
+            <th> PDF</th>
+            <th> PDF Name</th>
+            <th> Upload Date</th>
+            <th> Download</th>
+            {% if user.is_authenticated %}
+            <th> Edit</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+      {% for pdf in PDFs %}
+      <tr>
+          <td><img src="{% static 'img/2186469_document_file_folder_pdf_icon.png' %}" alt="PDF Icon"></td>
+          <td style="font-weight: bold;">{{ pdf.name }}</td>
+          <td>{{ pdf.uploaded_at|date:"d-m-Y" }}</td>
+          <td><a href="{{ pdf.file.url }}" target="_blank"><img src="{% static 'img\2290851_download_document_download pdf_pdf_icon.png' %}" alt="" srcset=""></a></td>
+          <td>
+            {% if user.is_authenticated %}
+              <form method="POST" action="{% url 'delete_pdf' pdf.id %}" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn delete-btn">Delete</button>
+              </form>
+            {% endif %}
+          </td>
+        </tr>
+      {% empty %}
+      <tr>
+          <td colspan="3">No PDFs available for this category.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

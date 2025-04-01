@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}NAAC Portal{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Global Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f4f4f4;
+      color: #333;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: #fff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .logo img {
+      width: 180px;
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      font-weight: 500;
+      color: #333;
+      padding: 8px 12px;
+      transition: all 0.3s ease-in-out;
+      border-radius: 5px;
+    }
+
+    .menu a:hover {
+      color: #fff;
+      background: #002db3;
+    }
+
+    /* User Dropdown */
+    .user-dropdown {
+      position: relative;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 1000;
+      width: 150px;
+    }
+
+    .user-dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 12px;
+      color: black;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .dropdown-content a:hover {
+      background: #002db3;
+      color: white;
+    }
+
+    /* Social Icons */
+    .social-icons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .social-icons img {
+      width: 24px;
+      height: 24px;
+      transition: transform 0.3s;
+    }
+
+    .social-icons a:hover img {
+      transform: scale(1.1);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    /* Footer */
+    footer {
+      background: #002db3;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-weight: 500;
+      margin-top: 30px;
+    }
+
+    footer a {
+      color: #ffcc00;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    footer a:hover {
+      color: white;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .menu {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .social-icons {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .navbar .logo img {
+        width: 140px;
+      }
+    }
+  </style>
+
+  {% block extra_head %} {% endblock %}
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="navbar">
+    <div class="logo">
+      <a href="https://www.gncbudhlada.org/">
+        <img src="/static/img/gnclogo1_1709474320.png" alt="GNC Logo">
+      </a>
+    </div>
+    
+    <div class="menu">
+      <a href="{% url 'home' %}">Home</a>
+
+      {% if request.user.is_authenticated %}
+        <a href="{% url 'File_upload' %}">Upload</a>
+        <a href="{% url 'set_reminder' %}">Reminder</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+      {% endif %}
+    </div>
+
+    <div class="menu">
+      <div class="user-dropdown">
+        <span>{{ user.username|default:"Guest" }}</span>
+        <div class="dropdown-content">
+          {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}">Logout</a>
+          {% else %}
+            <a href="{% url 'login' %}">Login</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="social-icons">
+        <a href="https://www.facebook.com/budhladagurunanakcollege/m">
+          <img src="/static/img/4373129_f_facebook_logo_logos_icon.png" alt="Facebook">
+        </a>
+        <a href="https://www.instagram.com/gnc_official01/">
+          <img src="/static/img/2959748_instagram_photo_share_icon.png" alt="Instagram">
+        </a>
+        <a href="https://www.youtube.com/@gurunanakcollegebudhlada2211">
+          <img src="/static/img/4375133_logo_youtube_icon.png" alt="YouTube">
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Guru Nanak College | 
+      <a href="{% url 'development' %}">Developers</a>
+    </p>
+  </footer>
+
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}NAAC - Guru Nanak College{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* Page Styles */
+  .container {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  h1 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #002db3;
+  }
+
+  /* Carousel Wrapper */
+  .carousel-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    margin: 0 auto;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  /* Carousel */
+  .carousel {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    max-width: 990px;
+    height: 420px;
+    padding: 10px;
+  }
+
+  .carousel::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+  }
+
+  /* Cards */
+  .card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    min-width: 250px;
+    height: 320px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card img {
+    width: 120px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .card h2 {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .card p {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .card a {
+    text-decoration: none;
+    color: black;
+    transition: color 0.3s ease;
+  }
+
+  .card:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #1CB5E0, #061ef1);
+    color: white;
+  }
+
+  .card:hover a {
+    color: white;
+  }
+  .card:hover img {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+  }
+  .card:hover h2 {
+    color: white;
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+  }
+  .card:hover p {
+    color: white;
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+  }
+  
+
+  /* Navigation Buttons */
+  .nav-button {
+    border: 2px solid #333;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 20px;
+    background: white;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .nav-button:hover {
+    background: linear-gradient(135deg, #1CB5E0, #061ef1);
+    color: white;
+    transform: scale(1.1);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .carousel {
+      max-width: 80%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .carousel-wrapper {
+      flex-direction: column;
+    }
+
+    .nav-button {
+      display: none;
+    }
+
+    .carousel {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .card {
+      min-width: 240px;
+      height: 280px;
+    }
+
+    .card h2 {
+      font-size: 22px;
+    }
+
+    .card p {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .carousel {
+      max-width: 100%;
+    }
+
+    .card {
+      min-width: 200px;
+      height: 260px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+    }
+
+    .card p {
+      font-size: 14px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1>NAAC Yearly Data</h1><br>
+  <div class="carousel-wrapper">
+    <div class="nav-button" onclick="scrollCarousel(-1)">⬅</div>
+    <div class="carousel" id="carousel">
+      {% for year in years %}
+        <div class="card">
+          <a href="{% url 'chapter' %}?year={{ year }}">
+            <img src="/static/img/logo.png" alt="NAAC Logo">
+            <h2>NAAC</h2>
+            <p>Year {{ year }}</p>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="nav-button" onclick="scrollCarousel(1)">➡</div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  const carousel = document.getElementById('carousel');
+  
+  function scrollCarousel(direction) {
+    const cardWidth = document.querySelector('.card').offsetWidth + 15; // Card width + gap
+    carousel.scrollBy({ left: direction * cardWidth * 3, behavior: 'smooth' });
+  }
+</script>
+{% endblock %}

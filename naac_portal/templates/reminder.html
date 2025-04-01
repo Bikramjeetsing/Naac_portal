@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<style>
+    .reminder-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .reminder-container h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    input[type="datetime-local"] {
+        appearance: none;
+    }
+
+    button {
+        background: #007bff;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #0056b3;
+    }
+
+    .messages {
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+    }
+
+    .success {
+        background: #d4edda;
+        color: #155724;
+        border-left: 5px solid #28a745;
+    }
+
+    .error {
+        background: #f8d7da;
+        color: #721c24;
+        border-left: 5px solid #dc3545;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="reminder-container">
+    <h2>Set WhatsApp Reminder</h2>
+
+    <!-- Display Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="messages {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <label for="id_whatsapp_number">WhatsApp Number:</label>
+        <input type="text" name="whatsapp_number" id="id_whatsapp_number" required>
+
+        <label for="id_reminder_name">Reminder Name:</label>
+        <input type="text" name="reminder_name" id="id_reminder_name" required>
+
+        <label for="id_reminder_time">Reminder Time:</label>
+        <input type="datetime-local" name="reminder_time" id="id_reminder_time" required>
+
+        <button type="submit">Set Reminder</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}Upload File{% endblock %}
+
+{% block extra_head %}
+
+<style>
+    h2 {
+        text-align: center;
+        color: #0d6efd;
+        margin-bottom: 10px;
+        
+        margin-top: auto;
+    }
+    .space {
+        margin-top: 20px;
+        padding-bottom: 100px;
+    }
+    form {
+        max-width: 600px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        
+    }
+    .label {
+        font-weight: bold;
+        display: block;
+        margin: 10px 10 5px;
+
+    }
+    select {
+        width: 100%;
+        height: 40px;
+        padding: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+    .hh {
+        margin-top: 20px;
+        width: 98.5%;
+        height: 40px;
+        padding: 3px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+    input [type="file"] {
+        display: none; 
+        
+    }
+    button {
+        background-color: #0d6efd;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0b5ed7;
+    }
+</style>
+    
+{% endblock %}
+{% block content %}
+<h2>Upload a File</h2>
+<div class="space">
+<form method="POST" enctype="multipart/form-data" action="{% url 'upload_pdf' %}">
+    {% csrf_token %}
+    {% if message %}
+        {% if "Error" in message %}
+            <p style="color: red;">{{ message }}</p>
+        {% else %}
+            <p style="color: green;">{{ message }}</p>
+        {% endif %}
+    {% endif %}
+
+
+    <!-- Year Selection -->
+    <label for="year"></label>
+    <select class="label" name="year" id="year" required>
+        {% for year in years %}
+            <option value="{{ year.id }}">{{ year.year }}</option>
+        {% empty %}
+            <option>No years available</option>
+        {% endfor %}
+    </select>
+
+    <!-- Chapter Selection -->
+    <label for="chapter"></label>
+    <select class="label" name="chapter" id="chapter" onchange="updateSubchapters()" required>
+        <option value="">Select a Chapter</option>
+        {% for chapter in chapters %}
+            <option value="{{ chapter.id }}">{{ chapter.name }}</option>
+        {% empty %}
+            <option>No chapters available</option>
+        {% endfor %}
+    </select>
+
+    <!-- Sub-Chapter (Dynamically updated by JS) -->
+    <label for="subchapter"></label>
+    <select class="label" name="subchapter" id="subchapter" onchange="updateCategories()" required>
+        <option value="">Select Chapter First</option>
+    </select>
+
+    <!-- Category (Dynamically updated by JS) -->
+    <label for="category"></label>
+    <select class="label" name="category" id="category" required>
+        <option value="">Select Sub-Chapter First</option>
+    </select>
+    <div class="hh">
+    <!-- File Upload -->
+    <label for="file"></label>
+    <input type="file" name="file" id="fileInput" accept="application/pdf" required>
+
+    </div>
+    <!-- Submit Button -->
+    <button type="submit">Upload File</button>
+</form>
+</div>
+<!-- JavaScript for Dynamic Updates -->
+<script>
+    function updateSubchapters() {
+    const chapterId = document.getElementById('chapter').value;
+    const subchapterDropdown = document.getElementById('subchapter');
+    const categoryDropdown = document.getElementById('category');
+
+    subchapterDropdown.innerHTML = '<option value="">Loading...</option>';
+    categoryDropdown.innerHTML = '<option value="">Select Sub-Chapter First</option>';
+
+    if (chapterId) {
+        fetch(`/get-subchapters/?chapter_id=${chapterId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Subchapters:', data);
+                subchapterDropdown.innerHTML = '<option value="">Select Sub-Chapter</option>';
+                data.forEach(subchapter => {
+                    subchapterDropdown.innerHTML += `<option value="${subchapter.id}">${subchapter.name}</option>`;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching subchapters:', error);
+            });
+    }
+}
+
+function updateCategories() {
+    const subchapterId = document.getElementById('subchapter').value;
+    const categoryDropdown = document.getElementById('category');
+
+    categoryDropdown.innerHTML = '<option value="">Loading...</option>';
+
+    if (subchapterId) {
+        fetch(`/get-categories/?subchapter_id=${subchapterId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Categories:', data);
+                categoryDropdown.innerHTML = '<option value="">Select Category</option>';
+                data.forEach(category => {
+                    categoryDropdown.innerHTML += `<option value="${category.id}">${category.name}</option>`;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching categories:', error);
+            });
+    }
+}
+</script>
+{% endblock %}
