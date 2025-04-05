@@ -39,7 +39,7 @@ urlpatterns = [
     path('get-categories/', get_categories, name='get_categories'),
     path('developers/', development, name='development'),
     path('delete/<int:pdf_id>/', delete_pdf, name='delete_pdf'),
-    path('set-reminder/', set_reminder, name='set_reminder'),
+   # path('set-reminder/', set_reminder, name='set_reminder'),
 ]
 
 if settings.DEBUG:
