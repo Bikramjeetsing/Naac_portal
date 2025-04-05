@@ -45,7 +45,7 @@ class PDF(models.Model):
     
 
 class Reminder(models.Model):
-    whatsapp_number = models.CharField(max_length=20)
+    email = models.CharField(max_length=200)
     reminder_name = models.CharField(max_length=255)
     reminder_time = models.DateTimeField()
     repeat_yearly = models.BooleanField(default=False)  # New field to enable yearly reminders

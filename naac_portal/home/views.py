@@ -6,14 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.urls import reverse 
-from home.models import Reminder, Year, Chapter, SubChapter, Category, PDF
-from .forms import ReminderForm
-import os
+from home.models import Year, Chapter, SubChapter, Category, PDF
 from datetime import datetime
-from django.core.paginator import Paginator
-from twilio.rest import Client
 from django.http import JsonResponse
-from django.utils.timezone import now
+
 
 
 # ✅ Home page (with login form)
@@ -248,51 +244,3 @@ def category_list(request):
         categories = Category.objects.all()
     
     return render(request, 'base.html', {'categories': categories, 'query': query})
-
-def send_whatsapp_message(to, message):
-    client = Client(os.getenv("TWILIO_ACCOUNT_SID"), os.getenv("TWILIO_AUTH_TOKEN"))
-    twilio_whatsapp_number = os.getenv("TWILIO_WHATSAPP_NUMBER")
-
-    try:
-        message = client.messages.create(
-            from_=f"whatsapp:{twilio_whatsapp_number}",
-            body=message,
-            to=f"whatsapp:{to}"
-        )
-        return message.sid
-    except Exception as e:
-        return str(e)
-@login_required
-def set_reminder(request):
-    if request.method == "POST":
-        form = ReminderForm(request.POST)
-        if form.is_valid():
-            reminder = form.save(commit=False)
-
-            # Ensure the reminder time is in the future
-            if reminder.reminder_time <= now():
-                messages.error(request, "Reminder time should be in the future.")
-            else:
-                reminder.save()  # Save the reminder first
-                
-                # Send WhatsApp message when the reminder time arrives
-                send_whatsapp_message(reminder.whatsapp_number, reminder.reminder_name)
-
-                # If the reminder is yearly, create a new one for the next year
-                if reminder.repeat_yearly:
-                    next_year_reminder = Reminder(
-                        whatsapp_number=reminder.whatsapp_number,
-                        reminder_name=reminder.reminder_name,
-                        reminder_time=reminder.reminder_time.replace(year=reminder.reminder_time.year + 1),
-                        repeat_yearly=True
-                    )
-                    next_year_reminder.save()
-
-                messages.success(request, "Reminder set successfully!")
-
-            return redirect("set_reminder")
-    else:
-        form = ReminderForm()
-
-    return render(request, "reminder.html", {"form": form})
-

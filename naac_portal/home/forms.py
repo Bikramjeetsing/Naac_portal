@@ -11,4 +11,4 @@ class UploadFileForm(forms.ModelForm):
 class ReminderForm(forms.ModelForm):
     class Meta:
         model = Reminder
-        fields = ["whatsapp_number", "reminder_name", "reminder_time", "repeat_yearly"]
+        fields = ["email", "reminder_name", "reminder_time", "repeat_yearly"]
