@@ -4,6 +4,21 @@
 
 {% block extra_head %}
     <style> 
+        @keyframes fadeSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 2;
+                transform: translateY(10px);
+            }
+        }
+        /* Animate Developer Cards on Load */
+        .block {
+            animation: fadeSlideIn .9s ease-out both;
+        }
+        
    
         /* Reset Styles */
         * {

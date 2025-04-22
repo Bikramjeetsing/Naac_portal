@@ -5,6 +5,28 @@
 
 {% block extra_head %}
 <style>
+
+  @keyframes fadeSlideIn {
+      0% {
+          opacity: 0;
+          transform: translateY(30px);
+      }
+      100% {
+          opacity: 2;
+          transform: translateY(10px);
+      }
+  }
+ 
+  .page-title{
+    animation: fadeSlideIn 0.8s ease-out both;
+  }
+
+  /* Animate Developer Cards on Load */
+  .pdf-table {
+      animation: fadeSlideIn 0.8s ease-out both;
+  }
+  /* Staggered animation for multiple cards */
+
   .pdf-table {
     width: 90%;
     margin: 40px auto;

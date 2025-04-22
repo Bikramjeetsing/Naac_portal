@@ -147,6 +147,7 @@ LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = '/login/'
 
 
+# Twulio configuration
 TWILIO_ACCOUNT_SID = "your_account_sid"
 TWILIO_AUTH_TOKEN = "your_auth_token"
 TWILIO_WHATSAPP_NUMBER = "whatsapp:+14155238886"  # Twilio's Sandbox Number

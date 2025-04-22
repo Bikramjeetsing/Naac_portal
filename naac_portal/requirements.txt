@@ -1,9 +1,9 @@
-Django>=4.0
+django>=4.0
 celery>=5.2.7
 django-celery-beat>=2.4.0
 redis>=4.3.4
 twilio>=8.0.0
-sqlite3
+
 
 # Additional dependencies
 python-dotenv>=1.0.0
