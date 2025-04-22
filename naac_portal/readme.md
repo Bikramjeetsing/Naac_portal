@@ -62,7 +62,7 @@ The NAAC Portal is a Djangobased web application designed for managing accredita
 2. Install dependencies:
 
    ```sh
-   pip install r requirements.txt
+   pip install -r requirements.txt
    ```
 
 3. Set up the database:
