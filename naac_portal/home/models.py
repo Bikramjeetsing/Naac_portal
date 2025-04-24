@@ -1,6 +1,6 @@
 # models.py
 from django.db import models
-from django.utils.timezone import now
+from django.utils import timezone
 
 class Year(models.Model):
     year = models.IntegerField(unique=True)
@@ -38,7 +38,7 @@ class PDF(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='pdfs')
     name = models.CharField(max_length=255)
     file = models.FileField(upload_to='pdfs/')
-    uploaded_at = models.DateTimeField(auto_now_add=True)  # Saves date & time of upload
+    uploaded_at = models.DateTimeField(default=timezone.now)  # Saves date & time of upload
 
     def __str__(self):
         return f"{self.name} - {self.uploaded_at.strftime('%Y-%m-%d %H:%M:%S')}"
